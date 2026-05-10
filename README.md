@@ -1,2 +1,2 @@
 # myccr
-myccr平台的刷客脚本
+myccr平台的刷课脚本
