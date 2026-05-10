@@ -582,6 +582,17 @@ def stage_quiz(api, data, dry_run, force, use_ai, delay_ms, only_id):
 
 def main():
     args = parse_args()
+    print("本项目由ecx开发 开源地址https://github.com/ecxwxz/myccr")
+    print("猫娘交流群 105859360")
+    # DeepSeek API Key
+    if not args["no_ai"]:
+        ds_key = input("请输入 DeepSeek API Key（留空则禁用 AI 答题）: ").strip()
+        if ds_key:
+            DEEPSEEK_CONFIG["apiKey"] = ds_key
+            print(f"  AI 答题已启用 (model: {DEEPSEEK_CONFIG['model']})")
+        else:
+            print("  未提供 API Key，AI 答题已禁用")
+            args["no_ai"] = True
 
     # 交互式输入 token
     token = args["token"]
