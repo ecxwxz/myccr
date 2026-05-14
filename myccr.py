@@ -30,7 +30,7 @@ QTYPE_SINGLE_CHOICE = 200  # 单选题
 QTYPE_MULTI_CHOICE = 210  # 多选题
 QTYPE_TRUE_FALSE = 310  # 判断题
 QTYPE_FILL_BLANK = 320  # 填空题
-
+TFDictionary={"A":1,"B":2}
 
 def parse_args() -> Dict[str, Any]:
     """解析命令行参数"""
@@ -436,14 +436,14 @@ Optional[Dict[str, int]]:
 
     for g in quiz_data["data"].get("quizparts", []):
         for b in g.get("groups", []):
-            for q in b.get("questions", []):
+            for q in b.get("question", []):
                 qobj = {
                     "r_id": q["r_id"],
                     "answer_id": q["answer_id"],
-                    "group": 0,
-                    "type": 0,
+                    "group": b["group_id"],
+                    "type": b["type_id"],
                     "desc": strip_html(q.get("discription", "")),
-                    "options": q.get("option", []),
+                    "options": q.get("option", [{"k": "A", "v": "正确"},{"k": "B", "v": "错误"}]),
                     "answer": q.get("answer") or "",
                     "choose": q.get("choose", False),  # 是否已作答
                 }
@@ -466,9 +466,15 @@ Optional[Dict[str, int]]:
         for qnum, ans in sorted(ai_answers.items()):
             idx = qnum - 1
             if idx < len(unanswered_questions):
-                unanswered_questions[idx]["answer"] = "".join(ans)
-                unanswered_questions[idx]["ai_solved"] = True
-                print(f"    AI 推理: 第 {qnum} 题 → {''.join(ans)}")
+                if unanswered_questions[idx]["type"] != 400:
+                    unanswered_questions[idx]["answer"] = "".join(ans)
+                    unanswered_questions[idx]["ai_solved"] = True
+                    print(f"    AI 推理: 第 {qnum} 题 → {''.join(ans)}")
+                else:
+                    unanswered_questions[idx]["answer"] = "".join(ans)
+                    unanswered_questions[idx]["answer"] = TFDictionary[unanswered_questions[idx]["answer"]]
+                    unanswered_questions[idx]["ai_solved"] = True
+                    print(f"    AI 推理: 第 {qnum} 题 → {''.join(ans)}")
 
     ok_count, skip_count, fail_count = 0, 0, 0
 
