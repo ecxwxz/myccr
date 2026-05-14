@@ -466,15 +466,12 @@ Optional[Dict[str, int]]:
         for qnum, ans in sorted(ai_answers.items()):
             idx = qnum - 1
             if idx < len(unanswered_questions):
+                final_answer = "".join(ans)
                 if unanswered_questions[idx]["type"] != 400:
-                    unanswered_questions[idx]["answer"] = "".join(ans)
-                    unanswered_questions[idx]["ai_solved"] = True
-                    print(f"    AI 推理: 第 {qnum} 题 → {''.join(ans)}")
-                else:
-                    unanswered_questions[idx]["answer"] = "".join(ans)
-                    unanswered_questions[idx]["answer"] = TFDictionary[unanswered_questions[idx]["answer"]]
-                    unanswered_questions[idx]["ai_solved"] = True
-                    print(f"    AI 推理: 第 {qnum} 题 → {''.join(ans)}")
+                    final_answer = TFDictionary[unanswered_questions[idx]["answer"]]
+                unanswered_questions[idx]["answer"] = final_answer
+                unanswered_questions[idx]["ai_solved"] = True
+                print(f"    AI 推理: 第 {qnum} 题 → {''.join(ans)}")
 
     ok_count, skip_count, fail_count = 0, 0, 0
 
