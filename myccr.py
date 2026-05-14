@@ -467,7 +467,7 @@ Optional[Dict[str, int]]:
             idx = qnum - 1
             if idx < len(unanswered_questions):
                 final_answer = "".join(ans)
-                if unanswered_questions[idx]["type"] != 400:
+                if unanswered_questions[idx]["type"] == 400:
                     final_answer = TFDictionary[unanswered_questions[idx]["answer"]]
                 unanswered_questions[idx]["answer"] = final_answer
                 unanswered_questions[idx]["ai_solved"] = True
