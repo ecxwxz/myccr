@@ -882,7 +882,7 @@ def main():
     args = parse_args()
     print("=" * BANNER_WIDTH)
     print("  myccr 刷课助手")
-    print("  开源: https://github.com/ecxwxz/myccr  |  交流群 105859360")
+    print("  开源: https://github.com/ecxwxz/myccr  |  猫娘交流群 105859360")
     print("=" * BANNER_WIDTH)
 
     # ① 账号登录：优先使用 Token，否则使用 学校 + 学号 登录
