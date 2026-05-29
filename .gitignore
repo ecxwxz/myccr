@@ -1,0 +1,12 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# PyInstaller build output
+build/
+dist/
+
+# Editor / tool
+.claude/
+.idea/
+.vscode/

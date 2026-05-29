@@ -1,0 +1,45 @@
+name: Build and Release
+
+# 推送形如 v2.1 / v2.1.0 的标签时，自动在 Windows 上构建 exe 并发布到 Release。
+# 也可在 Actions 页面手动触发（workflow_dispatch）。
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt pyinstaller
+
+      - name: Build exe
+        run: pyinstaller --noconfirm --clean myccr.spec
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: myccr-windows
+          path: dist/myccr.exe
+
+      - name: Publish to Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/myccr.exe
+          generate_release_notes: true
