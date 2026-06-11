@@ -663,7 +663,7 @@ Optional[Dict[str, int]]:
             if idx < len(unanswered_questions):
                 final_answer = "".join(ans)
                 if unanswered_questions[idx]["type"] == 400:
-                    final_answer = TFDictionary[unanswered_questions[idx]["answer"]]
+                    final_answer = TFDictionary.get(final_answer, final_answer)
                 unanswered_questions[idx]["answer"] = final_answer
                 unanswered_questions[idx]["ai_solved"] = True
                 print(f"    AI 推理: 第 {qnum} 题 → {''.join(ans)}")
